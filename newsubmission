@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+function process_input {
+		if [ "$#" -ne 6 ]; then
+				show_usage_and_exit_1
+		fi
+		while [ ! -z "$1" ]; do
+				case "$1" in
+						-n|--name)
+								shift
+								name=$1
+								;;
+						-e|--email)
+								shift
+								email=$1
+								;;
+						-t|--title)
+								shift
+								title=$1
+								;;
+						*)
+								show_usage_and_exit_1
+								;;
+				esac
+				shift
+		done
+}
+
+function show_usage {
+		echo ""
+		echo "Usage:"
+		echo ""
+		echo "  $0 [parameters [values]]"
+		echo ""
+		echo "Parameters & Example Values:"
+		echo ""
+		echo "  -n|--name  \"Matt Laine\""
+		echo "  -e|--email \"matt@brain-fuel.co\""
+		echo "  -t|--title \"Radix Sort\""
+		echo ""
+		echo "Please populate all parameters."
+		echo ""
+}
+
+function show_usage_and_exit_1 {
+		show_usage
+		exit 1
+}
+
+function print_inputs {
+		echo ""
+		echo "Hello."
+		echo ""
+		echo "  Thank you for joining the competition"
+		echo "  and using literate programming!"
+		echo "  Have Fun!"
+		echo ""
+		echo "Here is the personal data you entered:"
+		echo ""
+		echo "  Name:  $name"
+		echo "  Email: $email"
+		echo "  Title: $name"
+		echo ""
+}
+
+function format_text_for_naming {
+		lowercase_hyphenated_text=$(echo $@ | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+		echo "$lowercase_hyphenated_text"
+}
+
+function make_skeleton_from_template {
+		echo $(format_text_for_naming $name)
+		echo $(format_text_for_naming $title)
+}
+
+process_input "$@"
+print_inputs
+make_skeleton_from_template
