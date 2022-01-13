@@ -68,11 +68,15 @@ function format_text_for_naming {
 		echo "$lowercase_hyphenated_text"
 }
 
+function name_folder {
+		echo $(format_text_for_naming $title)-$(format_text_for_naming $name)
+}
+
 function make_skeleton_from_template {
-		echo $(format_text_for_naming $name)
-		echo $(format_text_for_naming $title)
+		echo "foo"
 }
 
 process_input "$@"
 print_inputs
+name_folder
 make_skeleton_from_template
