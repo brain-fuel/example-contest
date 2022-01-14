@@ -1,82 +1,72 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
+import argparse
+import os
 
-function process_input {
-		if [ "$#" -ne 6 ]; then
-				show_usage_and_exit_1
-		fi
-		while [ ! -z "$1" ]; do
-				case "$1" in
-						-n|--name)
-								shift
-								name=$1
-								;;
-						-e|--email)
-								shift
-								email=$1
-								;;
-						-t|--title)
-								shift
-								title=$1
-								;;
-						*)
-								show_usage_and_exit_1
-								;;
-				esac
-				shift
-		done
-}
+program_description = 'Make a new submission according to the latest contest template.'
 
-function show_usage {
-		echo ""
-		echo "Usage:"
-		echo ""
-		echo "  $0 [parameters [values]]"
-		echo ""
-		echo "Parameters & Example Values:"
-		echo ""
-		echo "  -n|--name  \"Matt Laine\""
-		echo "  -e|--email \"matt@brain-fuel.co\""
-		echo "  -t|--title \"Radix Sort\""
-		echo ""
-		echo "Please populate all parameters."
-		echo ""
-}
+def handle_input():
+    parser = argparse.ArgumentParser(description=program_description)
+    parser.add_argument( \
+            '--name', \
+            help='"Matt Laine"', \
+            type=str, \
+            required=True, \
+            )
+    parser.add_argument( \
+            '--email', \
+            help='"matt@brain-fuel.co"', \
+            type=str, \
+            required=True, \
+            )
+    parser.add_argument( \
+            '--title', \
+            help='"Radix Sort"', \
+            type=str, \
+            required=True, \
+            )
+    return parser.parse_args()
 
-function show_usage_and_exit_1 {
-		show_usage
-		exit 1
-}
+def print_blank_line():
+    print('')
 
-function print_inputs {
-		echo ""
-		echo "Hello."
-		echo ""
-		echo "  Thank you for joining the competition"
-		echo "  and using literate programming!"
-		echo "  Have Fun!"
-		echo ""
-		echo "Here is the personal data you entered:"
-		echo ""
-		echo "  Name:  $name"
-		echo "  Email: $email"
-		echo "  Title: $name"
-		echo ""
-}
+def print_parsed_args(prog_input):
+    print('You Entered:')
+    print_blank_line()
+    print('   Name:  ' + prog_input.name)
+    print('   Email: ' + prog_input.email)
+    print('   Title: ' + prog_input.title)
+    print_blank_line()
 
-function format_text_for_naming {
-		lowercase_hyphenated_text=$(echo $@ | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
-		echo "$lowercase_hyphenated_text"
-}
+def folder_name_from_input(prog_input) -> str:
+    hyphenated_title = prog_input.title.lower().replace(' ','-')
+    hyphenated_name = prog_input.name.lower().replace(' ','-')
+    return hyphenated_title + '-' + hyphenated_name
 
-function name_folder {
-		echo $(format_text_for_naming $title)-$(format_text_for_naming $name)
-}
+def make_folder(folder_name) -> bool:
+    if os.path.isdir(folder_name):
+        return False
+    else:
+        os.mkdir(folder_name)
+        return True
 
-function make_skeleton_from_template {
-		echo "foo"
-}
+def print_whether_folder_made(folder_name: str, made_folder: bool):
+    if made_folder:
+        print("Made folder: " + folder_name)
+    else:
+        print("Folder " + folder_name + " already exists.")
 
-process_input "$@"
-print_inputs
-name_folder
-make_skeleton_from_template
+def submission_content_stub_from_input(prog_input) -> str:
+    print('submission_content_stub_from_input function still needs work')
+
+def main():
+    prog_input = handle_input()
+    print_blank_line()
+    print_parsed_args(prog_input)
+    folder_name = folder_name_from_input(prog_input)
+    made_folder = make_folder(folder_name)
+    print_whether_folder_made(folder_name, made_folder)
+    print_blank_line()
+    submission_content_stub = submission_content_stub_from_input(prog_input)
+    print_blank_line()
+
+main()
