@@ -51,9 +51,11 @@ def make_folder(folder_name) -> bool:
 
 def print_whether_folder_made(folder_name: str, made_folder: bool):
     if made_folder:
-        print("Made folder: " + folder_name)
+        print('Made folder: "' + folder_name + '".')
     else:
-        print("Folder " + folder_name + " already exists.")
+        print('Folder "' + folder_name + '" already exists.')
+    print_blank_line()
+    print('Populating with new contest template...')
     print_blank_line()
 
 def submission_content_stub_from_input(prog_input) -> str:
