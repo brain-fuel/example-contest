@@ -54,6 +54,7 @@ def print_whether_folder_made(folder_name: str, made_folder: bool):
         print("Made folder: " + folder_name)
     else:
         print("Folder " + folder_name + " already exists.")
+    print_blank_line()
 
 def submission_content_stub_from_input(prog_input) -> str:
     print('submission_content_stub_from_input function still needs work')
@@ -65,8 +66,6 @@ def main():
     folder_name = folder_name_from_input(prog_input)
     made_folder = make_folder(folder_name)
     print_whether_folder_made(folder_name, made_folder)
-    print_blank_line()
     submission_content_stub = submission_content_stub_from_input(prog_input)
-    print_blank_line()
 
 main()
