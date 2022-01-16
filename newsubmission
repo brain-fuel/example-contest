@@ -72,6 +72,7 @@ def make_file_if_path_does_not_exist(contents: str, file_path: str, verbose: int
             f = open(file_path, 'r')
             print_blank_line()
             print('   File contents were already: \n\n' + f.read())
+            f.close()
     print_blank_line()
 
 def print_blank_line():
