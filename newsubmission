@@ -35,7 +35,7 @@ def handle_input():
     return parser.parse_args()
 
 def sanitize_input(contents: str) -> str:
-    return re.sub(r"[^A-Za-z0-9 ]", "", contents) \
+    return re.sub(r"[^A-Za-z0-9 ]", "", contents).strip() \
 
 def derive_folder_path_from_input(prog_input) -> str:
     hyphenated_title = sanitize_input(prog_input.title) \
@@ -52,9 +52,9 @@ def derive_readme_content_from_input(prog_input) -> str:
     readme_file.close()
     current_year = str(datetime.datetime.now().date().year)
     readme_template = empty_readme_template \
-            .replace('<title>', prog_input.title) \
-            .replace('<name of author>', prog_input.name) \
-            .replace('<email>', prog_input.email) \
+            .replace('<title>', prog_input.title.strip()) \
+            .replace('<name of author>', prog_input.name.strip()) \
+            .replace('<email>', prog_input.email.strip()) \
             .replace('<year>', current_year)
     return readme_template
 
