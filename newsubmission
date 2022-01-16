@@ -93,17 +93,21 @@ def print_whether_file_or_folder_exists(folder_path: str):
         print('Path "' + folder_path + '" does not exist.')
     print_blank_line()
 
-def new_submission(prog_input):
+def ensure_submission_folder_exists(prog_input):
     folder_path = derive_folder_path_from_input(prog_input)
     print_whether_file_or_folder_exists(folder_path)
     make_folder_if_path_does_not_exist(folder_path)
 
+def ensure_submission_readme_exists(prog_input):
+    folder_path = derive_folder_path_from_input(prog_input)
     readme_path = folder_path + '/README.md'
     print_whether_file_or_folder_exists(readme_path)
-
     readme_content = derive_readme_content_from_input(prog_input)
     make_file_if_path_does_not_exist(readme_content, readme_path, prog_input.verbose)
 
+def ensure_submission_exists(prog_input):
+    ensure_submission_folder_exists(prog_input)
+    ensure_submission_readme_exists(prog_input)
     print('Complete!')
     print_blank_line()
 
@@ -111,6 +115,6 @@ def main():
     prog_input = handle_input()
     print_blank_line()
     print_parsed_args(prog_input)
-    new_submission(prog_input)
+    ensure_submission_exists(prog_input)
 
 main()
