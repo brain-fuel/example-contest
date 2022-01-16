@@ -1,5 +1,6 @@
 = <title>: <description>
 == License
+
 <title>: <description>
 Copyright (C) <year>  <name of author>
 
@@ -20,9 +21,16 @@ Email: <email>
 
 == Vision
 
-Back in the days, scribes
+I hope all y'all get to learn F#.
 
 == Steps
+
+Most people start by writing a "Hello, World" program. In F#, it looks like this:
+
+[source, fsharp]
+----
+printfn "Hello, World!"
+----
 
 == Contributions
 
