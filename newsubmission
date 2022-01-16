@@ -52,17 +52,17 @@ def derive_readme_content_from_input(prog_input) -> str:
 
 def make_folder_if_path_does_not_exist(folder_path: str):
     if not os.path.exists(folder_path):
-        print('   Making folder "' + folder_path + '"...')
         os.makedirs(folder_path)
+        print('   Made folder "' + folder_path + '"...')
     else:
         print('   Skipped making folder"' + folder_path + '"...')
     print_blank_line()
 
 def make_file_if_path_does_not_exist(contents: str, file_path: str, verbose: int = 0):
     if not os.path.exists(file_path):
-        print('   Making file "' + file_path + '"...')
         f = open(file_path, 'w')
         f.write(contents)
+        print('   Made file "' + file_path + '"...')
         if verbose > 0:
             print('   Wrote the following contents to file: \n' + contents)
         f.close()
