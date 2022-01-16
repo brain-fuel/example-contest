@@ -35,7 +35,7 @@ def handle_input():
     return parser.parse_args()
 
 def sanitize_input(contents: str) -> str:
-    return re.sub(r"[^A-Za-z0-9 ]", "", contents) \
+    return re.sub(r"[^A-Za-z0-9 ]", "", contents).strip() \
 
 def derive_folder_path_from_input(prog_input) -> str:
     hyphenated_title = sanitize_input(prog_input.title) \
