@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+
 import argparse
+import datetime
 import os
 
 program_description = 'Make a new submission according to the latest contest template.'
@@ -24,7 +26,53 @@ def handle_input():
             type=str, \
             required=True, \
             )
+    parser.add_argument( \
+            '--verbose', '-v', \
+            action='count', default=0, \
+            help='Use this if you want to see all the file contents' \
+            )
     return parser.parse_args()
+
+def derive_folder_path_from_input(prog_input) -> str:
+    hyphenated_title = prog_input.title.lower().replace(' ','-')
+    hyphenated_name = prog_input.name.lower().replace(' ','-')
+    return hyphenated_title + '-' + hyphenated_name
+
+def derive_content_readme_from_input(prog_input) -> str:
+    readme_file = open('templates/README.adoc')
+    empty_readme_template = readme_file.read()
+    readme_file.close()
+    current_year = str(datetime.datetime.now().date().year)
+    readme_template = empty_readme_template \
+            .replace('<title>', prog_input.title) \
+            .replace('<name of author>', prog_input.name) \
+            .replace('<email>', prog_input.email) \
+            .replace('<year>', current_year)
+    return readme_template
+
+def make_folder_if_path_does_not_exist(folder_path):
+    if not os.path.exists(folder_path):
+        print('   Making folder "' + folder_path + '"...')
+        os.makedirs(folder_path)
+    else:
+        print('   Skipped making folder"' + folder_path + '"...')
+    print_blank_line()
+
+def make_file_if_path_does_not_exist(contents, file_path, verbose=0):
+    if not os.path.exists(file_path):
+        print('   Making file "' + file_path + '"...')
+        f = open(file_path, 'w')
+        f.write(contents)
+        if verbose > 0:
+            print('   Wrote the following contents to file: \n' + contents)
+        f.close()
+    else:
+        print('   Skipped making file"' + file_path + '"...')
+        if verbose > 0:
+            f = open(file_path, 'r')
+            print_blank_line()
+            print('   File contents were already: \n\n' + f.read())
+    print_blank_line()
 
 def print_blank_line():
     print('')
@@ -37,37 +85,28 @@ def print_parsed_args(prog_input):
     print('   Title: ' + prog_input.title)
     print_blank_line()
 
-def folder_name_from_input(prog_input) -> str:
-    hyphenated_title = prog_input.title.lower().replace(' ','-')
-    hyphenated_name = prog_input.name.lower().replace(' ','-')
-    return hyphenated_title + '-' + hyphenated_name
-
-def make_folder(folder_name) -> bool:
-    if os.path.isdir(folder_name):
-        return False
+def print_whether_file_or_folder_exists(folder_path: str):
+    if os.path.exists(folder_path):
+        print('Path "' + folder_path + '" already exists.')
     else:
-        os.mkdir(folder_name)
-        return True
-
-def print_whether_folder_made(folder_name: str, made_folder: bool):
-    if made_folder:
-        print('Made folder: "' + folder_name + '".')
-    else:
-        print('Folder "' + folder_name + '" already exists.')
-    print_blank_line()
-    print('Populating with new contest template...')
+        print('Path "' + folder_path + '" does not exist.')
     print_blank_line()
 
-def submission_content_stub_from_input(prog_input) -> str:
-    print('submission_content_stub_from_input function still needs work')
+def new_submission(prog_input):
+    folder_path = derive_folder_path_from_input(prog_input)
+    readme_path = folder_path + '/README.md'
+    print_whether_file_or_folder_exists(folder_path)
+    make_folder_if_path_does_not_exist(folder_path)
+    print_whether_file_or_folder_exists(readme_path)
+    content_readme = derive_content_readme_from_input(prog_input)
+    make_file_if_path_does_not_exist(content_readme, readme_path, prog_input.verbose)
+    print('Complete!')
+    print_blank_line()
 
 def main():
     prog_input = handle_input()
     print_blank_line()
     print_parsed_args(prog_input)
-    folder_name = folder_name_from_input(prog_input)
-    made_folder = make_folder(folder_name)
-    print_whether_folder_made(folder_name, made_folder)
-    submission_content_stub = submission_content_stub_from_input(prog_input)
+    new_submission(prog_input)
 
 main()
