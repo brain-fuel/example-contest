@@ -38,7 +38,7 @@ def derive_folder_path_from_input(prog_input) -> str:
     hyphenated_name = prog_input.name.lower().replace(' ','-')
     return hyphenated_title + '-' + hyphenated_name
 
-def derive_content_readme_from_input(prog_input) -> str:
+def derive_readme_content_from_input(prog_input) -> str:
     readme_file = open('templates/README.adoc')
     empty_readme_template = readme_file.read()
     readme_file.close()
@@ -95,12 +95,15 @@ def print_whether_file_or_folder_exists(folder_path: str):
 
 def new_submission(prog_input):
     folder_path = derive_folder_path_from_input(prog_input)
-    readme_path = folder_path + '/README.md'
     print_whether_file_or_folder_exists(folder_path)
     make_folder_if_path_does_not_exist(folder_path)
+
+    readme_path = folder_path + '/README.md'
     print_whether_file_or_folder_exists(readme_path)
-    content_readme = derive_content_readme_from_input(prog_input)
-    make_file_if_path_does_not_exist(content_readme, readme_path, prog_input.verbose)
+
+    readme_content = derive_readme_content_from_input(prog_input)
+    make_file_if_path_does_not_exist(readme_content, readme_path, prog_input.verbose)
+
     print('Complete!')
     print_blank_line()
 
