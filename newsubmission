@@ -34,14 +34,14 @@ def handle_input():
             )
     return parser.parse_args()
 
-def sanitize_lower_input(contents: str) -> str:
+def sanitize_input(contents: str) -> str:
     return re.sub(r"[^A-Za-z0-9 ]", "", contents) \
 
 def derive_folder_path_from_input(prog_input) -> str:
-    hyphenated_title = sanitize_lower_input(prog_input.title) \
+    hyphenated_title = sanitize_input(prog_input.title) \
             .lower() \
             .replace(' ','-')
-    hyphenated_name = sanitize_lower_input(prog_input.name) \
+    hyphenated_name = sanitize_input(prog_input.name) \
             .lower() \
             .replace(' ','-')
     return hyphenated_title + '-' + hyphenated_name
