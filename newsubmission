@@ -50,7 +50,7 @@ def derive_content_readme_from_input(prog_input) -> str:
             .replace('<year>', current_year)
     return readme_template
 
-def make_folder_if_path_does_not_exist(folder_path):
+def make_folder_if_path_does_not_exist(folder_path: str):
     if not os.path.exists(folder_path):
         print('   Making folder "' + folder_path + '"...')
         os.makedirs(folder_path)
@@ -58,7 +58,7 @@ def make_folder_if_path_does_not_exist(folder_path):
         print('   Skipped making folder"' + folder_path + '"...')
     print_blank_line()
 
-def make_file_if_path_does_not_exist(contents, file_path, verbose=0):
+def make_file_if_path_does_not_exist(contents: str, file_path: str, verbose: int = 0):
     if not os.path.exists(file_path):
         print('   Making file "' + file_path + '"...')
         f = open(file_path, 'w')
