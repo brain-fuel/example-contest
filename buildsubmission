@@ -3,6 +3,7 @@
 import argparse
 import itertools
 import os
+import pprint
 import re
 import sys
 
@@ -63,6 +64,23 @@ def lang_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
 def extract_language_contents(lang: str, lang_comment: str, lang_extension: str, contents: str) -> str:
     return lang_contents(contents, lang)
 
+def extract_languages(contents: str) -> [str]:
+    foo = filter(lambda item: item.startswith('[source,'), contents)
+    bar = map(lambda item: re.sub(r"[^A-Za-z0-9,(source)]", "", item.lower()).split(',')[1], foo)
+    baz = set(bar)
+    return baz
+
+def extract_all_language_contents(contents: str) -> {str: [[str]]}:
+    languages = extract_languages(contents)
+    lang_comments = {
+            'fsharp':'//',
+            'bash': '#'}
+    lang_extensions = {
+            'fsharp':'.fs',
+            'bash': '.sh'}
+    lang_contents = [extract_language_contents(language, lang_comments.get(language), lang_extensions.get(language), contents) for language in languages]
+    return {languages: lang_contents for languages, lang_contents in zip(languages, lang_contents)}
+
 def main():
     print_blank_line()
     prog_input = handle_input()
@@ -74,11 +92,8 @@ def main():
     fsharp_contents = extract_language_contents('fsharp', '//', '.fs', readme_contents)
     bash_contents = extract_language_contents('bash', '#', '.fs', readme_contents)
     print_blank_line()
-    print(fsharp_contents)
     print_blank_line()
-    print(bash_contents)
+    pprint.pprint(extract_all_language_contents(readme_contents))
     print_blank_line()
 
 main()
-
-# TODO: make a function to map languages to lists of program snippets in each language
