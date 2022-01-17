@@ -89,8 +89,6 @@ def main():
     quit_if_folder_does_not_exist(folder)
     quit_if_file_does_not_exist(readme_file)
     readme_contents = fetch_readme_contents(readme_file)
-    fsharp_contents = extract_language_contents('fsharp', '//', '.fs', readme_contents)
-    bash_contents = extract_language_contents('bash', '#', '.fs', readme_contents)
     pprint.pprint(extract_all_language_contents(readme_contents))
     print_blank_line()
 
