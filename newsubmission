@@ -47,9 +47,8 @@ def derive_folder_path_from_input(prog_input) -> str:
     return hyphenated_title + '-' + hyphenated_name
 
 def derive_readme_content_from_input(prog_input) -> str:
-    readme_file = open('templates/README.adoc')
-    empty_readme_template = readme_file.read()
-    readme_file.close()
+    with open('templates/README.adoc', 'r') as readme_file:
+        empty_readme_template = readme_file.read()
     current_year = str(datetime.datetime.now().date().year)
     readme_template = empty_readme_template \
             .replace('<title>', prog_input.title.strip()) \
@@ -60,19 +59,17 @@ def derive_readme_content_from_input(prog_input) -> str:
 
 def make_file_if_path_does_not_exist(contents: str, file_path: str, verbose: int = 0):
     if not os.path.exists(file_path):
-        f = open(file_path, 'w')
-        f.write(contents)
+        with open(file_path, 'w') as f:
+            f.write(contents)
         print('   Made file "' + file_path + '"...')
         if verbose > 0:
             print('   Wrote the following contents to file: \n' + contents)
-        f.close()
     else:
         print('   Skipped making file"' + file_path + '"...')
         if verbose > 0:
-            f = open(file_path, 'r')
             print_blank_line()
-            print('   File contents were already: \n\n' + f.read())
-            f.close()
+            with open(file_path, 'r') as f:
+                print('   File contents were already: \n\n' + f.read())
     print_blank_line()
 
 def print_blank_line():
