@@ -66,7 +66,7 @@ def extract_language_contents(lang: str, \
 
 def extract_languages(contents: str) -> [str]:
     foo = filter(lambda item: item.startswith('[source,'), contents)
-    bar = map(lambda item: re.sub(r"[^A-Za-z0-9,(source)]", "", item.lower()).split(',')[1], foo)
+    bar = map(lambda item: re.sub(r"[^A-Za-z0-9,]", "", item.lower()).split(',')[1], foo)
     baz = set(bar)
     return baz
 
