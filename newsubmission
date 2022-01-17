@@ -94,7 +94,7 @@ def print_whether_file_or_folder_exists(folder_path: str):
     print_blank_line()
 
 def ensure_folder_exists(folder_path: str):
-    if not os.path.exists(folder_path):
+    if not os.path.isdir(folder_path):
         os.makedirs(folder_path)
         print('   Made folder "' + folder_path + '"...')
     else:

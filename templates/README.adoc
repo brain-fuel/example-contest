@@ -27,9 +27,37 @@ I hope all y'all get to learn F#.
 
 Most people start by writing a "Hello, World" program. In F#, it looks like this:
 
+[source, bash]
+----
+// hello
+echo "Hello, World!"
+----
+
+[source, bash]
+----
+// goodbye.sh
+echo "Goodbye, World!"
+----
+
 [source, fsharp]
 ----
+// hello.fs
 printfn "Hello, World!"
+----
+
+[source, fsharp]
+----
+printfn "Goodbye, World!"
+----
+
+[source, fsharp]
+----
+printfn "Screw you, World!"
+----
+
+[source, fsharp]
+----
+printfn "Manure, World!"
 ----
 
 == Contributions
