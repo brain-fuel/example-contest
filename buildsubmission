@@ -79,9 +79,10 @@ def extract_all_language_contents(contents: str) -> {str: [[str]]}:
             'fsharp':'.fs',
             'bash': '.sh'}
     lang_contents = [extract_language_contents(language, \
-            lang_comments.get(language, '//'), \
-            lang_extensions.get(language, '.fs'), \
-            contents) for language in languages]
+                                               lang_comments.get(language, '//'), \
+                                               lang_extensions.get(language, '.fs'), \
+                                               contents) \
+            for language in languages]
     return {languages: lang_contents \
             for languages, lang_contents in zip(languages, lang_contents)}
 
