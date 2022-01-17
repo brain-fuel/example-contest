@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+import argparse
+import itertools
+import os
+import re
+import sys
+
+program_description = 'Build a contest submission.'
+
+def handle_input():
+    parser = argparse.ArgumentParser(description=program_description)
+    parser.add_argument( \
+            '--folder', '-f', \
+            help='radix-sort-matt-laine', \
+            type=str, \
+            required=True, \
+            )
+    parser.add_argument( \
+            '--verbose', '-v', \
+            action='count', default=0, \
+            help='Use this if you want to see all the file contents' \
+            )
+    return parser.parse_args()
+
+def print_blank_line():
+    print('')
+
+def derive_folder_path_from_input(prog_input):
+    return re.sub(r"/", "", prog_input).strip()
+
+def quit_if_folder_does_not_exist(potential_folder: str):
+    if not os.path.isdir(potential_folder):
+        print(potential_folder + ' is not a folder.\n\nExiting.')
+        print_blank_line()
+        exit(1)
+
+def quit_if_file_does_not_exist(potential_file: str):
+    if not os.path.isfile(potential_file):
+        print(potential_file + ' is not a file.\n\nExiting.')
+        print_blank_line()
+        exit(1)
+
+def fetch_readme_contents(readme_file) -> str:
+    with open(readme_file, 'r') as f:
+        readme_contents = f.read().split('\n')
+        return readme_contents
+
+def lang_array(contents: [str], lang: str = 'fsharp'):
+    return 'foo'
+
+def first_lang_array_and_rest_of_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
+    lang_indicator = f'[source, {lang}]'
+    if lang_indicator in contents:
+        lang_indicator_index = contents.index(lang_indicator)
+        lang_code_block = contents[lang_indicator_index+2:]
+        first = list(itertools.takewhile(lambda x: x!= '----', lang_code_block))
+        rest = list(itertools.dropwhile(lambda x: x!= '----', lang_code_block))
+        return first_lang_array_and_rest_of_contents(rest, lang, acc + [first])
+    else:
+        return acc
+
+def extract_language_contents(lang: str, lang_comment: str, lang_extension: str, contents: str) -> str:
+    return first_lang_array_and_rest_of_contents(contents, lang)
+
+def main():
+    print_blank_line()
+    prog_input = handle_input()
+    folder = derive_folder_path_from_input(prog_input.folder)
+    readme_file = folder + '/README.md'
+    quit_if_folder_does_not_exist(folder)
+    quit_if_file_does_not_exist(readme_file)
+    readme_contents = fetch_readme_contents(readme_file)
+    fsharp_contents = extract_language_contents('fsharp', '//', '.fs', readme_contents)
+    bash_contents = extract_language_contents('bash', '#', '.fs', readme_contents)
+    print_blank_line()
+    print(fsharp_contents)
+    print_blank_line()
+    print(bash_contents)
+    print_blank_line()
+
+main()
+
+# TODO: make a function to map languages to lists of program snippets in each language
