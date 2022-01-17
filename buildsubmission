@@ -59,9 +59,9 @@ def lang_contents(contents: [str], lang: str, acc: [str] = []) -> [[str]]:
         return acc
 
 def extract_language_contents(lang: str, \
-        lang_comment: str, \
-        lang_extension: str, \
-        contents: str) -> str:
+                              lang_comment: str, \
+                              lang_extension: str, \
+                              contents: str) -> str:
     return lang_contents(contents, lang)
 
 def extract_languages(contents: str) -> [str]:
@@ -82,7 +82,7 @@ def extract_all_language_contents(contents: str) -> {str: [[str]]}:
                                                lang_comments.get(language, '//'), \
                                                lang_extensions.get(language, '.fs'), \
                                                contents) \
-            for language in languages]
+                     for language in languages]
     return {languages: lang_contents \
             for languages, lang_contents in zip(languages, lang_contents)}
 
