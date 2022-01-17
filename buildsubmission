@@ -49,19 +49,19 @@ def fetch_readme_contents(readme_file) -> str:
 def lang_array(contents: [str], lang: str = 'fsharp'):
     return 'foo'
 
-def first_lang_array_and_rest_of_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
+def lang_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
     lang_indicator = f'[source, {lang}]'
     if lang_indicator in contents:
         lang_indicator_index = contents.index(lang_indicator)
         lang_code_block = contents[lang_indicator_index+2:]
         first = list(itertools.takewhile(lambda x: x!= '----', lang_code_block))
         rest = list(itertools.dropwhile(lambda x: x!= '----', lang_code_block))
-        return first_lang_array_and_rest_of_contents(rest, lang, acc + [first])
+        return lang_contents(rest, lang, acc + [first])
     else:
         return acc
 
 def extract_language_contents(lang: str, lang_comment: str, lang_extension: str, contents: str) -> str:
-    return first_lang_array_and_rest_of_contents(contents, lang)
+    return lang_contents(contents, lang)
 
 def main():
     print_blank_line()
