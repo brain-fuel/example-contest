@@ -47,10 +47,7 @@ def fetch_readme_contents(readme_file) -> str:
         readme_contents = f.read().split('\n')
         return readme_contents
 
-def lang_array(contents: [str], lang: str = 'fsharp'):
-    return 'foo'
-
-def lang_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
+def lang_contents(contents: [str], lang: str, acc: [str] = []) -> [[str]]:
     lang_indicator = f'[source, {lang}]'
     if lang_indicator in contents:
         lang_indicator_index = contents.index(lang_indicator)
@@ -61,7 +58,10 @@ def lang_contents(contents: [str], lang: str = 'fsharp', acc: [str] = []):
     else:
         return acc
 
-def extract_language_contents(lang: str, lang_comment: str, lang_extension: str, contents: str) -> str:
+def extract_language_contents(lang: str, \
+        lang_comment: str, \
+        lang_extension: str, \
+        contents: str) -> str:
     return lang_contents(contents, lang)
 
 def extract_languages(contents: str) -> [str]:
@@ -78,8 +78,12 @@ def extract_all_language_contents(contents: str) -> {str: [[str]]}:
     lang_extensions = {
             'fsharp':'.fs',
             'bash': '.sh'}
-    lang_contents = [extract_language_contents(language, lang_comments.get(language, '//'), lang_extensions.get(language, '.fs'), contents) for language in languages]
-    return {languages: lang_contents for languages, lang_contents in zip(languages, lang_contents)}
+    lang_contents = [extract_language_contents(language, \
+            lang_comments.get(language, '//'), \
+            lang_extensions.get(language, '.fs'), \
+            contents) for language in languages]
+    return {languages: lang_contents \
+            for languages, lang_contents in zip(languages, lang_contents)}
 
 def main():
     print_blank_line()
