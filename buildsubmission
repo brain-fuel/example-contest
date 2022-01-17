@@ -60,7 +60,7 @@ def lang_contents(contents: [str], lang: str, acc: [str] = []) -> [[str]]:
 
 def extract_language_contents(lang: str, \
                               lang_comment: str, \
-                              lang_extension: str, \
+                              default_lang_extension: str, \
                               contents: str) -> str:
     return lang_contents(contents, lang)
 
@@ -75,12 +75,12 @@ def extract_all_language_contents(contents: str) -> {str: [[str]]}:
     lang_comments = {
             'fsharp':'//',
             'bash': '#'}
-    lang_extensions = {
+    default_lang_extensions = {
             'fsharp':'.fs',
             'bash': '.sh'}
     lang_contents = [extract_language_contents(language, \
                                                lang_comments.get(language, '//'), \
-                                               lang_extensions.get(language, '.fs'), \
+                                               default_lang_extensions.get(language, '.fs'), \
                                                contents) \
                      for language in languages]
     return {languages: lang_contents \
