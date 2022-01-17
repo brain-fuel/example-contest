@@ -78,7 +78,7 @@ def extract_all_language_contents(contents: str) -> {str: [[str]]}:
     lang_extensions = {
             'fsharp':'.fs',
             'bash': '.sh'}
-    lang_contents = [extract_language_contents(language, lang_comments.get(language), lang_extensions.get(language), contents) for language in languages]
+    lang_contents = [extract_language_contents(language, lang_comments.get(language, '//'), lang_extensions.get(language, '.fs'), contents) for language in languages]
     return {languages: lang_contents for languages, lang_contents in zip(languages, lang_contents)}
 
 def main():
@@ -91,8 +91,6 @@ def main():
     readme_contents = fetch_readme_contents(readme_file)
     fsharp_contents = extract_language_contents('fsharp', '//', '.fs', readme_contents)
     bash_contents = extract_language_contents('bash', '#', '.fs', readme_contents)
-    print_blank_line()
-    print_blank_line()
     pprint.pprint(extract_all_language_contents(readme_contents))
     print_blank_line()
 
